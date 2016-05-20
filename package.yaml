@@ -1,0 +1,51 @@
+# https://docs.npmjs.com/cli/configuring-npm/package-json
+$schema: https://json.schemastore.org/package
+version: 0.1.7
+name: "@danielbayley/sandbox"
+description: A sandbox repository for testing.
+keywords:
+- sandbox
+- testing
+
+homepage: https://github.com/danielbayley/sandbox#readme
+repository: danielbayley/sandbox
+bugs: https://github.com/danielbayley/sandbox/issues
+
+author:
+  name: Daniel Bayley
+  email: daniel.bayley@me.com
+  url: danielbayley.dev
+
+license: MIT
+funding: https://github.com/sponsors/danielbayley
+
+type: module
+exports: &index ./index.js
+files: [*index]
+directories:
+  build: &publish build
+
+engines:
+  node: ">=22"
+  pnpm: ">=10"
+packageManager: pnpm@10.0.0
+
+devDependencies:
+  np: ^10.1.0
+  publint: ^0.3.2
+  yaml: ^2.7.0
+
+publishConfig:
+  access: public
+  directory: *publish
+config:
+  directory: *publish
+np:
+  contents: *publish
+
+scripts:
+  prepare: yaml --single --json --indent ${TABSIZE:-2} < package.yaml > package.json
+
+  test: node --experimental-test-coverage --test test.js
+
+  release: pre-publish
